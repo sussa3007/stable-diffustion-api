@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body>
+<div class="space-y-4 py-2 align-middle inline-block w-full max-w-xxl sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+            This is <span th:text="${statusCode} ?: _">403</span> error page.
+        </h2>
+        <ul class="text-start text-lg font-bold leading-7 text-gray-900 sm:text-lg sm:truncate"
+            style="margin-left: 1em; white-space: normal; padding: 1em;">
+            <li>ErrorCode:
+                <span th:text="${errorCode} ?: _"
+                                 style="color: red"
+            >BAD_REQUEST (10000)</span>
+            </li>
+            <li style="margin-top: 1em">Message:
+                <span th:text="${message} ?: _"
+                               style="color: red"
+            > Bad request - org.springframework.validation.BeanPropertyBindingResult: 1 errors Field error in object 'placeRequest' on field 'capacity': rejected value [asfd]; codes [typeMismatch.placeRequest.capacity,typeMismatch.capacity,typeMismatch.java.lang.Integer,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [placeRequest.capacity,capacity]; arguments []; default message [capacity]]; default message [Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "asfd"]</span>
+            </li>
+            <li style="margin-top: 1em">Back URL:
+                <span th:text="${backUrl} ?: _"
+                      th:href="@{${backUrl}}"
+                      style="color: red"
+                > None </span>
+            </li>
+        </ul>
+</div>
+
+<script th:inline="javascript">
+    window.onload = function(){
+        var nextPage = [[@{__${nextPage}__}]], msg = [[${msg}]];
+        if(nextPage) {
+            alert(msg);
+            location.href = nextPage;
+        } else {
+        }
+        };
+    $(this).ready(function() {
+        var nextPage = [[@{__${nextPage}__}]], msg = [[${msg}]];
+        if(nextPage) {
+            alert(msg);
+            location.href = nextPage
+        } else {
+        }
+    });
+</script>
+</body>
+</html>
