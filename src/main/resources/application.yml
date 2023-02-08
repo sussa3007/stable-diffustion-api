@@ -1,0 +1,26 @@
+
+#spring.datasource.url=jdbc:h2:mem:testdb
+
+spring:
+  thymeleaf:
+    cache: false
+  thymeleaf3:
+    decoupled-logic: true
+
+
+debug: false
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+logging.level:
+  org:
+    hibernate:
+      type:
+        descriptor:
+          sql:
+            org.hibernate.type.descriptor.sql.BasicBinder : trace
+    springframework:
+      web.servlet : debug
