@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>Stable Diffusion</title>
+</head>
+<body class="bg-gray-200">
+
+<div class="py-14 bg-gray-200 flex justify-center">
+    <div class="w-full max-w-xl" style="margin-left: 1em">
+        <div class="w-full max-w-xl">
+            <image id="image"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="flex-1 min-w-0 pr-lh">
+            <h2 class="block text-blue-700 text-xl font-bold mb-2">Input</h2>
+            <div><h2 class="block text-gray-700 text-md font-bold mb-2">Model</h2>
+                <div class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <span id="modelText" class="output w-full">
+                        </span></div>
+            </div>
+            <div><h2 class="block text-gray-700 text-md font-bold mb-2">prompt</h2>
+                <div class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <span id="promptText" class="output w-full">
+                        </span></div>
+            </div>
+            <div><h2 class="block text-gray-700 text-md font-bold mb-2">negative_prompt</h2>
+                <div class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <span id="negativePromptText" class="output w-full">
+                    </span></div>
+            </div>
+            <div><h2 class="block text-gray-700 text-md font-bold mb-2">width</h2>
+                <div class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <span id="widthText" class="output w-full">
+                        </span></div>
+            </div>
+            <div><h2 class="block text-gray-700 text-md font-bold mb-2">height</h2>
+                <div class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <span id="heightText" class="output w-full">
+                        </span></div>
+            </div>
+
+            <div><h2 class="block text-gray-700 text-md font-bold mb-2">
+                num_inference_steps</h2>
+                <div class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <span id="stepText"
+                          class="output w-full"></span></div>
+            </div>
+
+            <div><h2 class="block text-gray-700 text-md font-bold mb-2">guidance_scale</h2>
+                <div class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <span id="scaleText" class="output w-full"></span></div>
+            </div>
+            <div><h2 class="block text-gray-700 text-md font-bold mb-2">seed</h2>
+                <div class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <span id="seedText" class="output w-full">
+                        </span></div>
+            </div>
+
+        </div>
+    </div>
+    <div class="w-full max-w-xl" style="margin-left: 1em">
+        <form id="createForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                <span id="infoTitle">Stable Diffusion AI</span>
+            </h2>
+            <h2 class="text-sm font-bold leading-7 text-gray-900 sm:text-sm sm:truncate" style="color: cornflowerblue">
+                <span id="infoSubTitle" style="color: chocolate">다시 입력해 그림을 생성하세요</span>
+                <details>
+                    <summary>안내사항 (클릭)</summary>
+                    <span>
+                    - Openjourney 모델은 Negative Prompt가 반환되지 않습니다.
+                    <br>- 이미지가 생성되는데 최소 10초에서 1분 이상 소요 됩니다.
+                    <br>- Stable Diffusion V2.0 외 모델은 30초 이상 소요될수 있습니다.
+                    <br>- <A href="https://replicate.com/" style="color: red"> replicate.com (클릭) </A> 에서 발급받은 API Key를 입력해 주세요.
+                    <br>==> 이미지 생성시간 : 약 7분에서 최대 15분간 무료 사용 가능(약 50개 이미지)
+                    <br>==> 위 페이지 가입 후 Dashboard 에서 사용시간 확인 가능
+                    <br>==> API key는 가입 후 우측 상단 프로필 클릭 -> Account 탭에서 확인 가능
+                    <br>==> API key 암호화 처리됨
+                </span>
+                </details>
+
+            </h2>
+            <div class="mb-6"style="margin-top: 1em">
+                <label for="key" class="block text-gray-700 text-sm font-bold mb-2">
+                    API Key
+                </label>
+                <input type="password" id="key" name="key"
+                       placeholder="API Key를 입력해주세요"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required>
+            </div>
+            <div class="mb-6" >
+                <label for="model" class="block text-gray-700 text-sm font-bold mb-2">
+                    Model
+                </label>
+                <select id="model" name="model"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                        required>
+                    <option>Stable Diffusion V2.0</option>
+                    <option>Openjourney</option>
+                    <option>Midjourney</option>
+                    <option>Funko</option>
+                    <option>Pokemon</option>
+                </select>
+            </div>
+            <div class="mb-4" >
+                <label for="prompt" class="block text-gray-700 text-sm font-bold mb-2">
+                    Prompt
+                </label>
+                <textarea id="prompt" name="prompt"
+                          placeholder="생성하고 싶은 그림의 명령어를 입력하세요"
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          style="height: 8em"
+                ></textarea>
+            </div>
+
+            <div class="mb-6">
+                <label for="negative_prompt" class="block text-gray-700 text-sm font-bold mb-2">
+                    Negative Prompt
+                </label>
+                <textarea id="negative_prompt" name="negative_prompt"
+                          placeholder="생성하는 그림에 불필요한 명령어를 입력하세요"
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          style="height: 8em"
+                ></textarea>
+            </div>
+
+            <div class="mb-6">
+                <label for="width" class="block text-gray-700 text-sm font-bold mb-2">
+                    Width
+                </label>
+                <select id="width" name="width"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                        required>
+                    <option>768</option>
+                    <option>512</option>
+                </select>
+            </div>
+            <div class="mb-6">
+                <label for="height" class="block text-gray-700 text-sm font-bold mb-2">
+                    Height
+                </label>
+                <select id="height" name="height"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                        required>
+                    <option>768</option>
+                    <option>512</option>
+                </select>
+            </div>
+
+            <div class="mb-6">
+                <label for="num_inference_steps" class="block text-gray-700 text-sm font-bold mb-2">
+                    Steps
+                </label>
+                <input type="number" id="num_inference_steps" name="num_inference_steps" min="20" max="150"
+                       placeholder="20 이상 150 이하" value="50"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-6">
+                <label for="guidance_scale" class="block text-gray-700 text-sm font-bold mb-2">
+                    Guidance Scale
+                </label>
+                <input type="number" id="guidance_scale" name="guidance_scale" min="3" max="30" step="0.5"
+                       placeholder="3이상 30 이하 0.5 단위" value="7.5"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-6">
+                <label for="seed" class="block text-gray-700 text-sm font-bold mb-2">
+                    Seed
+                </label>
+                <input type="number" id="seed" name="seed" min="-1" step="1" placeholder="-1일때 랜덤값" value="-1"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button id="submit" type="submit"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Generate
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+</body>
+</html>
