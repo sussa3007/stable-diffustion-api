@@ -2,7 +2,9 @@ package com.preproject.server.stable.service;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.preproject.server.constant.ErrorCode;
 import com.preproject.server.constant.Model;
+import com.preproject.server.exception.GeneralException;
 import com.preproject.server.stable.dto.StableDto;
 import com.preproject.server.stable.dto.StableImageDto;
 import com.preproject.server.stable.dto.StableResponseDto;
@@ -64,12 +66,23 @@ public class StableService {
         OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
         wr.write(jsonMessage); //json 형식의 message 전달
         wr.flush();
+        try {
+            Map response = getResponse(gson, con);
+            Map urls = (LinkedTreeMap) response.get("urls");
+            System.out.println("result:" + urls.get("get"));
 
-        Map response = getResponse(gson, con);
-        Map urls = (LinkedTreeMap) response.get("urls");
-        System.out.println("result:" + urls.get("get"));
+            return getStableImageDto((String) urls.get("get"), dto.getModel(), dto.getKey());
+        } catch (Exception e) {
+            int responseCode = con.getResponseCode();
+            if (responseCode == 401) {
+                throw new GeneralException(ErrorCode.UNAUTHORIZED);
+            } else if (responseCode == 402) {
+                throw new GeneralException(ErrorCode.FREE_LIMIT_EXCEEDED);
+            } else {
+                throw new GeneralException(ErrorCode.BAD_REQUEST);
+            }
+        }
 
-        return getStableImageDto((String) urls.get("get"), dto.getModel(), dto.getKey());
     }
 
     private StableResponseDto getStableImageDto(
