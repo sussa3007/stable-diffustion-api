@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class StableService {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Accept", "application/json");
-        con.setRequestProperty("Authorization", "Token "+dto.getKey());
+        con.setRequestProperty("Authorization", "Token " + dto.getKey());
         con.setRequestMethod("POST");
 
         con.setDoInput(true);
@@ -67,15 +68,53 @@ public class StableService {
         OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
         wr.write(jsonMessage); //json 형식의 message 전달
         wr.flush();
-        try {
-            Map response = getResponse(gson, con);
-            Map urls = (LinkedTreeMap) response.get("urls");
 
-            Map<String , Object> map = new HashMap<>();
-            map.put("url", urls.get("get"));
-            map.put("model", dto.getModel());
-            map.put("key", dto.getKey());
-            return map;
+        Map response = getResponse(gson, con);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", response.get("id"));
+        map.put("model", dto.getModel());
+        map.put("key", dto.getKey());
+        return map;
+
+    }
+
+    public StableResponseDto getStableImageDto(
+            String id, String model, String key
+    ) throws IOException, InterruptedException {
+        URL url = new URL(apiUrl +"/"+ id);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "application/json");
+        con.setRequestProperty("Authorization", "Token " + key);
+        con.setRequestMethod("GET");
+
+        Map map = getResponse(gson, con);
+        if (map.get("status").equals("processing") || map.get("status").equals("starting")) {
+            Thread.sleep(5000);
+            return getStableImageDto(id, model, key);
+        } else {
+            System.out.println("status = " + map.get("status"));
+            List<String> arr = (List) map.get("output");
+            String output = arr.stream().findFirst().orElseThrow(() -> new RuntimeException());
+            Map<String, Object> input = (Map<String, Object>) map.get("input");
+
+            StableImageDto stableImageDto = StableImageDto.of(key, model, input);
+            return StableResponseDto.of(stableImageDto, output);
+        }
+    }
+
+    private Map getResponse(Gson gson, HttpURLConnection con) throws IOException {
+        try {
+            StringBuilder sb = new StringBuilder();
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            br.close();
+            return gson.fromJson(sb.toString(), Map.class);
         } catch (Exception e) {
             int responseCode = con.getResponseCode();
             if (responseCode == 401) {
@@ -87,43 +126,6 @@ public class StableService {
             }
         }
 
-    }
-
-    public StableResponseDto getStableImageDto(
-            String getUrl, String model, String key
-    ) throws Throwable {
-        URL url = new URL(getUrl);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Accept", "application/json");
-        con.setRequestProperty("Authorization", "Token "+key);
-        con.setRequestMethod("GET");
-
-        Map map = getResponse(gson, con);
-        if (map.get("status").equals("processing") || map.get("status").equals("starting")) {
-            Thread.sleep(5000);
-            return getStableImageDto(getUrl, model, key);
-        } else {
-            System.out.println("status = " + map.get("status"));
-            List<String> arr = (List) map.get("output");
-            String output = arr.stream().findFirst().orElseThrow(() -> new RuntimeException());
-            Map<String, Object> input = (Map<String, Object>) map.get("input");
-
-            StableImageDto stableImageDto = StableImageDto.of(key,model,input);
-            return StableResponseDto.of(stableImageDto, output);
-        }
-    }
-
-    private Map getResponse(Gson gson, HttpURLConnection con) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = new BufferedReader(
-                new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
-        String line;
-        while ((line = br.readLine()) != null) {
-            sb.append(line).append("\n");
-        }
-        br.close();
-        return gson.fromJson(sb.toString(), Map.class);
     }
 
 }

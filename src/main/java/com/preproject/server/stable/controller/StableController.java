@@ -33,7 +33,7 @@ public class StableController {
                 Map.of(
                         "msg", "이미지 생성중 입니다.",
                         "nextPage",
-                        "/stable-diffusion?url=" +map.get("url")
+                        "/stable-diffusion?id=" +map.get("id")
                                 +"&model=" +map.get("model")
                                 +"&key="+map.get("key")
                 )
@@ -45,7 +45,7 @@ public class StableController {
             @RequestParam Map<String, Object> param
     ) throws Throwable {
         StableResponseDto response = service.getStableImageDto(
-                (String) param.get("url"),
+                (String) param.get("id"),
                 (String) param.get("model"),
                 (String) param.get("key")
         );
