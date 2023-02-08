@@ -50,6 +50,8 @@ public class StableService {
         stableDto.setInput(dto);
         if (dto.getModel().equals(Model.STABLE_DIFFUSION_V2.getName())) {
             stableDto.setVersion(Model.STABLE_DIFFUSION_V2.getVersion());
+        } else if (dto.getModel().equals(Model.STABLE_DIFFUSION_V2_1.getName())) {
+            stableDto.setVersion(Model.STABLE_DIFFUSION_V2_1.getVersion());
         } else if (dto.getModel().equals(Model.OPEN_JOURNEY.getName())) {
             stableDto.setVersion(Model.OPEN_JOURNEY.getVersion());
         } else if (dto.getModel().equals(Model.MID_JOURNEY.getName())) {
