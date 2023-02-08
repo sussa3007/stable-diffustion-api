@@ -1,4 +1,0 @@
-<?xml version="1.0"?>
-<thlogic>
-    <attr sel="#submit" th:form="createForm" th:formaction="@{/stable-diffusion}" th:formmethod="post" />
-</thlogic>

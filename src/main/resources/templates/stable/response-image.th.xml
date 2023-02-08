@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <thlogic>
-    <attr sel="#infoTitle" th:text="'Stable Diffusion AI'" />
+    <attr sel="#infoTitle" th:text="'Draw With AI'" />
     <attr sel="#key" th:value="*{response?.input.key}" />
     <attr sel="#prompt" th:text="*{response?.input.prompt}" />
     <attr sel="#negative_prompt" th:text="*{response?.input.negative_prompt}" />

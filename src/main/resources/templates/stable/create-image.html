@@ -5,20 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <title>Stable Diffusion</title>
+
 </head>
+
 <body class="bg-gray-200">
 
 <div class="py-14 bg-gray-200 flex justify-center">
+
     <div class="w-full max-w-xl">
         <image id="image"
                src="https://user-images.githubusercontent.com/110886399/217293299-c9e1b9b2-bc66-4cf8-b2c5-c306c078f888.png"
                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </image>
     </div>
+
     <div class="w-full max-w-xl" style="margin-left: 1em">
-        <form id="createForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
+        <form id="createForm"
+              class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-                <span id="infoTitle">Stable Diffusion AI</span>
+                <span id="infoTitle">Draw With AI</span>
             </h2>
             <h2 class="text-sm font-bold leading-7 text-gray-900 sm:text-sm sm:truncate" style="color: cornflowerblue">
                 <span id="infoSubTitle" style="color: chocolate">예시 Prompt 입니다</span>
@@ -38,16 +44,16 @@
             </h2>
             <div class="mb-6" style="margin-top: 1em">
                 <label for="key" class="block text-gray-700 text-sm font-bold mb-2">
-                    API Key
+                    &#x1F511 API Key
                 </label>
                 <input type="password" id="key" name="key"
                        placeholder="API Key를 입력해주세요"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required>
+                       required>
             </div>
             <div class="mb-6">
                 <label for="model" class="block text-gray-700 text-sm font-bold mb-2">
-                    Model
+                    &#x1F4C2 Model
                 </label>
                 <select id="model" name="model"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -61,7 +67,7 @@
             </div>
             <div class="mb-4">
                 <label for="prompt" class="block text-gray-700 text-sm font-bold mb-2">
-                    Prompt
+                    &#x2712 Prompt
                 </label>
                 <textarea id="prompt" name="prompt"
                           placeholder="생성하고 싶은 그림의 명령어를 입력하세요"
@@ -72,7 +78,7 @@
 
             <div class="mb-6">
                 <label for="negative_prompt" class="block text-gray-700 text-sm font-bold mb-2">
-                    Negative Prompt
+                    &#x274C Negative Prompt
                 </label>
                 <textarea id="negative_prompt" name="negative_prompt"
                           placeholder="생성하는 그림에 불필요한 명령어를 입력하세요"
@@ -83,7 +89,7 @@
 
             <div class="mb-6">
                 <label for="width" class="block text-gray-700 text-sm font-bold mb-2">
-                    Width
+                    &#x2194 Width
                 </label>
                 <select id="width" name="width"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -94,7 +100,7 @@
             </div>
             <div class="mb-6">
                 <label for="height" class="block text-gray-700 text-sm font-bold mb-2">
-                    Height
+                    &#x2195 Height
                 </label>
                 <select id="height" name="height"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -106,7 +112,7 @@
 
             <div class="mb-6">
                 <label for="num_inference_steps" class="block text-gray-700 text-sm font-bold mb-2">
-                    Steps
+                    &#x303D Steps
                 </label>
                 <input type="number" id="num_inference_steps" name="num_inference_steps" min="20" max="150"
                        placeholder="20 이상 150 이하" value="50"
@@ -114,7 +120,7 @@
             </div>
             <div class="mb-6">
                 <label for="guidance_scale" class="block text-gray-700 text-sm font-bold mb-2">
-                    Guidance Scale
+                    &#x267B Guidance Scale
                 </label>
                 <input type="number" id="guidance_scale" name="guidance_scale" min="3" max="30" step="0.5"
                        placeholder="3이상 30 이하 0.5 단위" value="7.5"
@@ -122,7 +128,7 @@
             </div>
             <div class="mb-6">
                 <label for="seed" class="block text-gray-700 text-sm font-bold mb-2">
-                    Seed
+                    &#x1F331 Seed
                 </label>
                 <input type="number" id="seed" name="seed" min="-1" step="1" placeholder="-1일때 랜덤값" value="556445"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
@@ -130,6 +136,9 @@
 
             <div class="flex items-center justify-between">
                 <button id="submit" type="submit"
+                        th:form="createForm"
+                        th:formaction="@{/loading}"
+                        th:formmethod="post"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Generate
                 </button>
@@ -139,6 +148,5 @@
 
     </div>
 </div>
-
 </body>
 </html>
