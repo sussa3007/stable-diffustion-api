@@ -5,18 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <title>Stable Diffusion</title>
+
 </head>
+
 <body class="bg-gray-200">
 
 <div class="py-14 bg-gray-200 flex justify-center">
+
     <div class="w-full max-w-xl">
         <image id="image"
                src="https://user-images.githubusercontent.com/110886399/217293299-c9e1b9b2-bc66-4cf8-b2c5-c306c078f888.png"
                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </image>
     </div>
+
     <div class="w-full max-w-xl" style="margin-left: 1em">
-        <form id="createForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
+        <form id="createForm"
+              class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
                 <span id="infoTitle">Stable Diffusion AI</span>
             </h2>
@@ -43,7 +49,7 @@
                 <input type="password" id="key" name="key"
                        placeholder="API Key를 입력해주세요"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required>
+                       required>
             </div>
             <div class="mb-6">
                 <label for="model" class="block text-gray-700 text-sm font-bold mb-2">
@@ -130,6 +136,9 @@
 
             <div class="flex items-center justify-between">
                 <button id="submit" type="submit"
+                        th:form="createForm"
+                        th:formaction="@{/loading}"
+                        th:formmethod="post"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Generate
                 </button>
@@ -139,6 +148,5 @@
 
     </div>
 </div>
-
 </body>
 </html>
