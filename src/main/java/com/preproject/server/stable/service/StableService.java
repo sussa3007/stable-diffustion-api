@@ -18,6 +18,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class StableService {
 
     private final Gson gson;
 
-    public StableResponseDto callAIModel(
+    public Map<String, Object> callAIModel(
             StableImageDto dto
     ) throws Throwable {
         URL url = new URL(apiUrl);
@@ -69,9 +70,12 @@ public class StableService {
         try {
             Map response = getResponse(gson, con);
             Map urls = (LinkedTreeMap) response.get("urls");
-            System.out.println("result:" + urls.get("get"));
 
-            return getStableImageDto((String) urls.get("get"), dto.getModel(), dto.getKey());
+            Map<String , Object> map = new HashMap<>();
+            map.put("url", urls.get("get"));
+            map.put("model", dto.getModel());
+            map.put("key", dto.getKey());
+            return map;
         } catch (Exception e) {
             int responseCode = con.getResponseCode();
             if (responseCode == 401) {
@@ -85,11 +89,9 @@ public class StableService {
 
     }
 
-    private StableResponseDto getStableImageDto(
+    public StableResponseDto getStableImageDto(
             String getUrl, String model, String key
     ) throws Throwable {
-        Thread.sleep(5000);
-        System.out.println("sleep 5 sec....");
         URL url = new URL(getUrl);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestProperty("Content-Type", "application/json");
@@ -99,9 +101,7 @@ public class StableService {
 
         Map map = getResponse(gson, con);
         if (map.get("status").equals("processing") || map.get("status").equals("starting")) {
-            System.out.println("status = " + map.get("status"));
-            Thread.sleep(2000);
-            System.out.println("sleep 2 sec....");
+            Thread.sleep(5000);
             return getStableImageDto(getUrl, model, key);
         } else {
             System.out.println("status = " + map.get("status"));
@@ -116,8 +116,6 @@ public class StableService {
 
     private Map getResponse(Gson gson, HttpURLConnection con) throws IOException {
         StringBuilder sb = new StringBuilder();
-        System.out.println("Response Code = " + con.getResponseCode());
-        System.out.println("Response Message = " + con.getResponseMessage());
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
         String line;
