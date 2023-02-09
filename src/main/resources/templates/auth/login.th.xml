@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}" />
+    <attr sel="#login" th:form="loginForm" th:formaction="@{/login}" th:formmethod="post" />
+    <attr sel="#signup"  th:onclick="|location.href='@{/sign-up}'|" />
+    <attr sel="#googlelogin" th:onclick="|location.href='http://zulseoza.site/oauth2/authorization/google'|" />
+    <attr sel="#kakaologin" th:onclick="|location.href='https://zulseoza.site/oauth2/authorization/kakao'|"  />
+</thlogic>
