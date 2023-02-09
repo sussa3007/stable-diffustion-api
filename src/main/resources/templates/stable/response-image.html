@@ -7,7 +7,7 @@
     <title>Stable Diffusion</title>
 </head>
 <body class="bg-gray-200">
-
+<header th:insert="fragments.html::nav"></header>
 <div class="py-14 bg-gray-200 flex justify-center">
     <div class="w-full max-w-xl" style="margin-left: 1em">
         <div class="w-full max-w-xl">
@@ -182,7 +182,7 @@
                     Generate
                 </button>
             </div>
-
+            <input type="hidden" id="csrf">
         </form>
 
     </div>

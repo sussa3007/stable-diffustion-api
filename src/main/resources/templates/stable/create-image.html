@@ -9,7 +9,7 @@
 </head>
 
 <body class="bg-gray-200">
-
+<header th:insert="fragments.html::nav"></header>
 <div class="py-14 bg-gray-200 flex justify-center">
 
     <div class="w-full max-w-xl">
@@ -20,9 +20,9 @@
     </div>
 
     <div class="w-full max-w-xl" style="margin-left: 1em">
-
         <form id="createForm"
               class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <input type="hidden" id="csrf">
             <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
                 <span id="infoTitle">Draw With AI</span>
             </h2>
@@ -144,7 +144,6 @@
                     Generate
                 </button>
             </div>
-
         </form>
 
     </div>
