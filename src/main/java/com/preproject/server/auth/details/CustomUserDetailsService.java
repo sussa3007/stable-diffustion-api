@@ -28,6 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<Member> optionalMember = memberRepository.findByEmail(username);
         Member member = optionalMember.orElseThrow(
                 () -> new UsernameNotFoundException(ErrorCode.NOT_FOUND_MEMBER.getMessage()));
+        System.out.println(member.getPassword());
         return new CustomUserDetails(member);
     }
 
@@ -35,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         public CustomUserDetails(Member member) {
             setEmail(member.getEmail());
             setPassword(member.getPassword());
-            setPassword(member.getNickName());
+            setNickName(member.getNickName());
             setRoles(member.getRoles());
         }
 
