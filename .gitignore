@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### env & index.html ###
+src/main/resources/env.yml
+src/main/resources/static/docs/**
+
+### querydsl
+/src/main/generated
