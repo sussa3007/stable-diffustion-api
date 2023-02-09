@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <thlogic>
+    <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}" />
     <attr sel="#infoTitle" th:text="'Draw With AI'" />
     <attr sel="#key" th:value="*{response?.input.key}" />
     <attr sel="#prompt" th:text="*{response?.input.prompt}" />
@@ -17,5 +18,5 @@
     <attr sel="#seedText" th:text="*{response?.input.seed}" />
     <attr sel="#widthText" th:text="*{response?.input.width}" />
     <attr sel="#heightText" th:text="*{response?.input.height}" />
-    <attr sel="#submit" th:form="createForm" th:formaction="@{/stable-diffusion}" th:formmethod="post" />
+    <attr sel="#submit" th:form="createForm" th:formaction="@{/loading}" th:formmethod="post" />
 </thlogic>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}" />
+    <attr sel="#signup" th:form="signUpForm" th:formaction="@{/new-signup}" th:formmethod="post" />
+    <attr sel="#verifyEmail" th:form="signUpForm" th:formaction="@{/checkEmail}" th:formmethod="post" />
+    <attr sel="#phoneNumber" th:pattern="'[0-9]{2,4}-[0-9]{3,4}-[0-9]{4}'"
+          th:title="'전화번호 형식을 맞춰주세요 (ex: 000-0000-0000)'" />
+    <attr sel="#cancel" th:onclick="'location.href=\'' + @{${backUrl}} + '\''" />
+</thlogic>

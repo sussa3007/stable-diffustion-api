@@ -24,8 +24,6 @@ public enum ErrorCode {
     FAILED_LOGIN(404, HttpStatus.NOT_FOUND, "Login failed Check Your ID & PW"),
     MEMBER_EXISTS(400, HttpStatus.BAD_REQUEST, "Member Exists"),
     NICKNAME_EXISTS(400, HttpStatus.BAD_REQUEST, "Nickname Exists"),
-    NOT_FOUND_REQUEST(404, HttpStatus.NOT_FOUND, "Not Found Request"),
-    NOT_FOUND_EVENT(404, HttpStatus.NOT_FOUND, "Not Found Event"),
     EXCEEDING_MAXIMUM_OCCUPANCY(404, HttpStatus.NOT_FOUND, "Exceeding maximum occupancy"),
 
     REQUEST_DELETE_PLACE_DENIED(400, HttpStatus.BAD_REQUEST, "Request Place Delete Denied"),

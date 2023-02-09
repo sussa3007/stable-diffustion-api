@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#logoutTitle" th:text="${adminOperationStatus.message} +' 되었습니다'" />
+    <attr sel="#msg" th:text="${msg} " />
+    <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}" />
+    <attr sel="#confirm" th:value="${adminOperationStatus.message}"
+          th:form="confirmForm" th:formaction="@{/logout}" th:formmethod="post" />
+</thlogic>

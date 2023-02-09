@@ -7,6 +7,7 @@
     <title>Title</title>
 </head>
 <body>
+<header th:insert="fragments.html::nav"></header>
 <div class="space-y-4 py-2 align-middle inline-block w-full max-w-xxl sm:px-6 lg:px-8">
         <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
             This is <span th:text="${statusCode} ?: _">403</span> error page.

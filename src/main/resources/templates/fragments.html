@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.5/dist/flowbite.min.css" />
+    <title>fragments</title>
+</head>
+<body class="max-w-xxl mx-auto px-4 ">
+<div th:fragment="nav">
+    <nav class="bg-white border-gray-200 dark:bg-gray-900">
+        <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xxl px-4 md:px-6 py-2.5">
+            <a th:href="@{/}" class="flex items-center" style="margin-left: 2em">
+                <img src="https://user-images.githubusercontent.com/110886399/217602171-bcb2562d-b6bc-46e6-b9c6-1af2c2f993ec.png"
+                     class="h-6 mr-3 sm:h-9" alt="Flowbite Logo" />
+                <span
+                        class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Draw With AI</span>
+            </a>
+            <div class="flex items-center" style="margin-right: 2em" >
+                <span sec:authentication="name" sec:authorize="isAuthenticated()"
+                   class="mr-6 text-sm font-medium text-gray-500 dark:text-white hover:underline"></span>
+                <span class="mr-6 text-sm font-medium text-gray-500 dark:text-white hover:underline"
+                      sec:authorize="isAuthenticated()"
+                >
+                    님 안녕하세요!
+                </span>
+                <button id="login" type="submit"
+                        style="margin-left: 1em"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="!isAuthenticated()"
+                        th:onclick="|location.href='@{/login}'|">
+                    Login
+                </button>
+                <button id="signup" type="submit"
+                        style="margin-left: 1em"
+                        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="!isAuthenticated()"
+                        th:onclick="|location.href='@{/sign-up}'|">
+                    Sign Up
+                </button>
+                <button id="mypage" type="button"
+                        style="margin-left: 1em"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="isAuthenticated()"
+                        th:onclick="|location.href='@{/info}'|"
+                >
+                    MyPage
+                </button>
+                <button id="logout" type="button"
+                        style="margin-left: 1em"
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="isAuthenticated()"
+                        th:onclick="|location.href='@{/logout}'|"
+                >
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
+</html>
