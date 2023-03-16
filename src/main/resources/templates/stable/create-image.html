@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>Stable Diffusion</title>
+
+</head>
+
+<body class="bg-gray-200">
+<header th:insert="fragments.html::nav"></header>
+<div class="py-14 bg-gray-200 flex justify-center">
+
+    <div class="w-full max-w-xl">
+        <image id="image"
+               src="https://user-images.githubusercontent.com/110886399/217293299-c9e1b9b2-bc66-4cf8-b2c5-c306c078f888.png"
+               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </image>
+    </div>
+
+    <div class="w-full max-w-xl" style="margin-left: 1em">
+        <form id="createForm"
+              class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <input type="hidden" id="csrf">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                <span id="infoTitle">Draw With AI</span>
+            </h2>
+            <h2 class="text-sm font-bold leading-7 text-gray-900 sm:text-sm sm:truncate" style="color: cornflowerblue">
+                <span id="infoSubTitle" style="color: chocolate">예시 Prompt 입니다</span>
+                <details>
+                    <summary>안내사항 (클릭)</summary>
+                    <span>
+                    - Openjourney 모델은 Negative Prompt가 반환되지 않습니다.
+                    <br>- 이미지가 생성되는데 최소 10초에서 1분 이상 소요 됩니다.
+                    <br>- Stable Diffusion V2.0 외 모델은 30초 이상 소요될수 있습니다.
+                    <br>- <A href="https://replicate.com/" style="color: red"> replicate.com (클릭) </A> 에서 발급받은 API Key를 입력해 주세요.
+                    <br>==> 이미지 생성시간 : 약 7분에서 최대 15분간 무료 사용 가능(약 50개 이미지)
+                    <br>==> 위 페이지 가입 후 Dashboard 에서 사용시간 확인 가능
+                    <br>==> API key는 가입 후 우측 상단 프로필 클릭 -> Account 탭에서 확인 가능
+                    <br>==> API key 암호화 처리됨
+                </span>
+                </details>
+            </h2>
+            <div class="mb-6" style="margin-top: 1em">
+                <label for="key" class="block text-gray-700 text-sm font-bold mb-2">
+                    &#x1F511 API Key
+                </label>
+                <input type="password" id="key" name="key"
+                       placeholder="API Key를 입력해주세요"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       required>
+            </div>
+            <div class="mb-6">
+                <label for="model" class="block text-gray-700 text-sm font-bold mb-2">
+                    &#x1F4C2 Model
+                </label>
+                <select id="model" name="model"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                        required>
+                    <option>Stable Diffusion V2.0</option>
+                    <option>Stable Diffusion V2.1</option>
+                    <option>Openjourney</option>
+                    <option>Midjourney</option>
+                    <option>Funko</option>
+                    <option>Pokemon</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="prompt" class="block text-gray-700 text-sm font-bold mb-2">
+                    &#x2712 Prompt
+                </label>
+                <textarea id="prompt" name="prompt"
+                          placeholder="생성하고 싶은 그림의 명령어를 입력하세요"
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          style="height: 8em"
+                >portrait, cyberpunk cute chibi groot, futuristic,  tone mapped, intricate, elegant, highly detailed, digital painting, artstation, concept art, smooth, sharp focus, illustration, dreamy magical atmosphere, art by artgerm and greg rutkowski and alphonse mucha, 4k, 8k</textarea>
+            </div>
+
+            <div class="mb-6">
+                <label for="negative_prompt" class="block text-gray-700 text-sm font-bold mb-2">
+                    &#x274C Negative Prompt
+                </label>
+                <textarea id="negative_prompt" name="negative_prompt"
+                          placeholder="생성하는 그림에 불필요한 명령어를 입력하세요"
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          style="height: 8em"
+                >frame, border, ugly, fat, overweight, (long neck), bad quality, error, blurry, blurred, high contrast, ((dyed hair)), two heads, multiple heads, two faces, multiple faces, multiple people, group of people</textarea>
+            </div>
+
+            <div class="mb-6">
+                <label for="width" class="block text-gray-700 text-sm font-bold mb-2">
+                    &#x2194 Width
+                </label>
+                <select id="width" name="width"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                        required>
+                    <option>768</option>
+                    <option>512</option>
+                </select>
+            </div>
+            <div class="mb-6">
+                <label for="height" class="block text-gray-700 text-sm font-bold mb-2">
+                    &#x2195 Height
+                </label>
+                <select id="height" name="height"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                        required>
+                    <option>768</option>
+                    <option>512</option>
+                </select>
+            </div>
+
+            <div class="mb-6">
+                <label for="num_inference_steps" class="block text-gray-700 text-sm font-bold mb-2">
+                    &#x303D Steps
+                </label>
+                <input type="number" id="num_inference_steps" name="num_inference_steps" min="20" max="150"
+                       placeholder="20 이상 150 이하" value="50"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-6">
+                <label for="guidance_scale" class="block text-gray-700 text-sm font-bold mb-2">
+                    &#x267B Guidance Scale
+                </label>
+                <input type="number" id="guidance_scale" name="guidance_scale" min="3" max="30" step="0.5"
+                       placeholder="3이상 30 이하 0.5 단위" value="7.5"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-6">
+                <label for="seed" class="block text-gray-700 text-sm font-bold mb-2">
+                    &#x1F331 Seed
+                </label>
+                <input type="number" id="seed" name="seed" min="-1" step="1" placeholder="-1일때 랜덤값" value="556445"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button id="submit" type="submit"
+                        th:form="createForm"
+                        th:formaction="@{/loading}"
+                        th:formmethod="post"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Generate
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

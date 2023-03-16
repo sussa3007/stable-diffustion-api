@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>Sign-Up</title>
+</head>
+<body class="bg-gray-200">
+<header th:insert="fragments.html::nav"></header>
+<div class="py-14 bg-gray-200 flex justify-center">
+    <div class="w-full max-w-lg">
+        <form id="signUpForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <input type="hidden" id="csrf">
+            <h2 style="margin-bottom: 1em"
+                class="text-sm font-bold leading-7 text-gray-900 sm:text-lg sm:truncate">
+                <span>회원 가입</span>
+            </h2>
+            <div class="mb-4">
+                <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
+                    Email
+                </label>
+                <div id="emailVerify" class="flex justify-content-between ">
+                    <input th:if="${check eq false}" th:value="${email}" type="email" id="email" name="email"
+                           placeholder="이메일 주소 (ex: hello@mail.com)"
+                           class="shadow appearance-none border rounded w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           required>
+                    <input th:if="${check eq true}" th:value="${email}" type="email" id="email" name="email"
+                           placeholder="이메일 주소 (ex: hello@mail.com)"
+                           class="shadow appearance-none border rounded w-4/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           readonly>
+                    <button th:if="${check eq false}"
+                            id="verifyEmail" type="submit" style="margin-left: 0.3em"
+                            class="bg-red-200 hover:bg-red-700 text-black text-sm font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                        중복 확인
+                    </button>
+                    <button th:if="${check eq true}"
+                            id="checkEmail" type="button" style="margin-left: 0.3em"
+                            class="bg-green-200 hover:bg-green-700 text-black text-sm font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                        확인 완료!
+                    </button>
+                </div>
+            </div>
+
+            <div th:if="${check eq true}" class="mb-6">
+                <label for="nickName" class="block text-gray-700 text-sm font-bold mb-2">
+                    Nickname
+                </label>
+                <input type="text" id="nickName" name="nickName" placeholder="Nickname"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                       required>
+
+            </div>
+
+            <div th:if="${check eq true}" class="mb-6">
+                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">
+                    Password
+                </label>
+                <input type="password" id="password" name="password" placeholder="******"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                       required>
+            </div>
+
+            <div th:if="${check eq true}" class="mb-6">
+                <label for="phoneNumber" class="block text-gray-700 text-sm font-bold mb-2">
+                    Phone Number
+                </label>
+                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="010-0000-0000"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                       required>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <h2 th:if="${check eq false}"
+                    class="text-sm font-bold leading-7 text-gray-900 sm:text-sm sm:truncate" style="color: red">
+                    <span id="infoSubTitle">이메일 중복 확인을 해주세요!</span>
+                </h2>
+                <button th:if="${check eq true}"
+                        id="signup" type="submit"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Sign Up
+                </button>
+                <button id="cancel" type="button"
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Cancel
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>
